@@ -16,9 +16,7 @@ export default {
         }
     },
     created: function () {
-        console.log("https://image.tmdb.org/t/p/w500" + this.movie.poster_path);
         this.img= "https://image.tmdb.org/t/p/w500" + this.movie.poster_path;
-        console.log(this.img)
     }
 }
 </script>

@@ -3,11 +3,11 @@
     <img alt="Vue logo" src="../assets/movie.png" />
     <h1>! Films du jour !</h1>
     <input v-model="movieName" placeholder="Movie Name" />
-    <p>Number of pages: {{ pages }}</p>
+    <p>Number of pages: {{ page }}</p>
     <p>Movie name is: {{ movieName }}</p>
     <ul id="array-rendering">
-      <li v-for="(movie,index) in movies" :key=index>
-        <Movie v-if="movie.original_title.includes(movieName)" :movie="movie"/>
+      <li v-for="(movie,index) in movies.filter(movie => movie.original_title.includes(movieName))" :key="index">
+        <Movie :movie="movie"/>
       </li>
     </ul>
     <button @click="morePages()"> Show More !</button>
@@ -25,7 +25,7 @@ export default {
     return {
       movieName: "",
       movies: [],
-      page: 1
+      page: 1,
     }
   },
   name: "Home",
@@ -80,6 +80,6 @@ a {
 }
 
 #array-rendering {
-
+  flex-wrap: wrap;
 }
 </style>
