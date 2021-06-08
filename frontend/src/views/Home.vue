@@ -1,12 +1,12 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/movie.png" />
+    <img src="../assets/movie.png" />
     <h1>! Films du jour !</h1>
     <input v-model="movieName" placeholder="Movie Name" />
     <p>Number of pages: {{ page }}</p>
     <p>Movie name is: {{ movieName }}</p>
     <ul id="array-rendering">
-      <li v-for="(movie,index) in movies.filter(movie => movie.original_title.includes(movieName))" :key="index">
+      <li v-for="(movie,index) in movies.filter(movie => movie.original_title.toLowerCase().includes(movieName.toLowerCase()))" :key="index">
         <Movie :movie="movie"/>
       </li>
     </ul>
@@ -30,18 +30,17 @@ export default {
   },
   name: "Home",
   created: function () {
-    this.fetchMovies(1)
+    this.fetchMovies()
   },
   methods: {
     morePages: function () {
       this.page = this.page + 1;
-      this.fetchMovies(this.page)
+      this.fetchMovies()
     },
-    fetchMovies: function (page) {
+    fetchMovies: function () {
       axios
-        .get(`https://api.themoviedb.org/3/movie/popular?api_key=522d421671cf75c2cba341597d86403a&language=en-US&page=` + page)
+        .get(`https://api.themoviedb.org/3/movie/popular?api_key=522d421671cf75c2cba341597d86403a&language=en-US&page=` + this.page)
         .then((response) => {
-         console.log(response.data.results);
          this.movies = this.movies.concat(response.data.results);
        })
        .catch((error) => {

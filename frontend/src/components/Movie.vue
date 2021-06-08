@@ -1,6 +1,7 @@
 <template>
     <div class=movie-card>
-        <img :src="img" />
+        <img v-if="movie.poster_path!==null" :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" />
+        <img v-if="movie.poster_path===null" src="../assets/no_poster.png" />
         <h2>{{ movie.original_title}} : {{ movie.release_date}}</h2>
     </div>
 </template>
@@ -10,14 +11,14 @@ export default {
     props: {
         movie: Object,
     },
-    data: function () {
-        return {
-            img: ''
-        }
-    },
-    created: function () {
-        this.img= "https://image.tmdb.org/t/p/w500" + this.movie.poster_path;
-    }
+    // data: function () {
+    //     return {
+    //         img: ''
+    //     }
+    // },
+    // mounted: function () {
+    //     this.img= "https://image.tmdb.org/t/p/w500" + this.movie.poster_path;
+    // }
 }
 </script>
 
