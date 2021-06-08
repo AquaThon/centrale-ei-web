@@ -1,5 +1,6 @@
 const express = require("express");
 const MovieModel = require("../models/movie");
+const populateDatabase = require("../services/populateMovieDatabase");
 const router = express.Router();
 
 router.get("/", function (req, res) {
@@ -16,6 +17,11 @@ router.delete("/delete", function (req, res) {
         message: `Successfully deleted movie with id ${req.body.id} !`,
       });
   });
+});
+
+router.post("/populate", function (req, res) {
+  populateDatabase();
+  res.json({ message: "DONE" });
 });
 
 router.post("/new", function (req, res) {
