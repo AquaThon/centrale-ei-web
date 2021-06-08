@@ -37,7 +37,7 @@ export default {
   created: function () {
     console.log("Loading API")
     axios
-    .get(`${VUE_APP_BACKEND_BASE_URL}/movies`)
+    .get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies`)
     .then(this.fetchMovies)
     .catch(this.apiCallFailure)
   },
