@@ -1,77 +1,55 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <h1>Welcome to Your Vue.js App</h1>
+    <img alt="Vue logo" src="../assets/logo.jpg" class="logo" />
+    <h1>Bienvenue sur le site du CineVR !</h1>
     <p>
-      For a guide and recipes on how to configure / customize this project,<br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank">vue-cli documentation</a>.
+      <input type="text" v-model="movieName" placeholder="Type a movie name here">
     </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router"
-          target="_blank"
-          >router</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          >eslint</a
-        >
-      </li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li>
-        <a href="https://vuejs.org" target="_blank">Core Docs</a>
-      </li>
-      <li>
-        <a href="https://forum.vuejs.org" target="_blank">Forum</a>
-      </li>
-      <li>
-        <a href="https://chat.vuejs.org" target="_blank">Community Chat</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/vuejs" target="_blank">Twitter</a>
-      </li>
-      <li>
-        <a href="https://news.vuejs.org" target="_blank">News</a>
-      </li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li>
-        <a href="https://router.vuejs.org" target="_blank">vue-router</a>
-      </li>
-      <li>
-        <a href="https://vuex.vuejs.org" target="_blank">vuex</a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-devtools#vue-devtools"
-          target="_blank"
-          >vue-devtools</a
-        >
-      </li>
-      <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank">vue-loader</a>
-      </li>
-      <li>
-        <a href="https://github.com/vuejs/awesome-vue" target="_blank"
-          >awesome-vue</a
-        >
-      </li>
-    </ul>
+    <h3>Movies</h3>
+    <div class="cards">
+      <Movie v-for="movie in movies"
+        :key="movie.id"
+        :movieId="movie.id"
+        :movieOriginalTitle=movie.title
+        :movieDescription=movie.overview
+        :moviePosterPath="`https://image.tmdb.org/t/p/w500${movie.poster_path}`"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import Movie from "@/components/Movie.vue";
+
 export default {
   name: "Home",
+  components: {
+    Movie
+  },
+  data: function () {
+    return {
+      apiKey: "522d421671cf75c2cba341597d86403a",
+      movieName: "",
+      movies: []
+    };
+  },
+  created: function () {
+    console.log("Loading API")
+    axios
+    .get(`https://api.themoviedb.org/3/trending/movie/day?api_key=${this.apiKey}`)
+    .then(this.fetchMovies)
+    .catch(this.apiCallFailure)
+  },
+  methods: {
+    fetchMovies: function (response) {
+      this.movies = response.data.results
+      console.log("Fetched movies")
+    },
+    apiCallFailure: function (error) {
+      console.log(error)
+    }
+  },
 };
 </script>
 
@@ -79,6 +57,17 @@ export default {
 <style scoped>
 .home {
   text-align: center;
+  color: #1d1d1d;
+}
+
+.logo {
+  max-height: 150px;
+  max-width: 200px;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 h3 {
