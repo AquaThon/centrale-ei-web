@@ -20,16 +20,25 @@ router.delete("/delete", function (req, res) {
 });
 
 router.post("/populate", function (req, res) {
-  populateDatabase();
+  populateDatabase(8);
   res.json({ message: "DONE" });
 });
 
 router.post("/new", function (req, res) {
   const newMovie = new MovieModel({
     id: req.body.id,
-    original_title: req.body.original_title,
-    release_date: req.body.release_date,
-    poster_path: req.body.poster_path,
+    originalTitle: req.body.original_title,
+    releaseDate: req.body.release_date,
+    posterPath: req.body.poster_path,
+    backdropPath: req.body.backdrop_path,
+    genreIds: req.body.genre_ids,
+    originalLanguage: req.body.original_language,
+    overview: req.body.overview,
+    popularity: req.body.popularity,
+    title: req.body.title,
+    video: req.body.video,
+    voteAverage: req.body.vote_average,
+    voteCount: req.body.vote_count,
   });
 
   newMovie

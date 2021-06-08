@@ -41,6 +41,7 @@ export default {
       axios
         .get(`https://api.themoviedb.org/3/movie/popular?api_key=522d421671cf75c2cba341597d86403a&language=en-US&page=` + this.page)
         .then((response) => {
+         console.log(response.data.results);
          this.movies = this.movies.concat(response.data.results);
        })
        .catch((error) => {
