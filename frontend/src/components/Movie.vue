@@ -26,10 +26,11 @@ export default {
 
 <style>
   .card {
-    flex: 0 0 200px;
+    flex: 0 0 250px;
     margin: 10px;
     border: 1px solid #ccc;
     box-shadow: 2px 2px 6px 0px  rgba(0,0,0,0.3);
+    background: #f0f0f0;
     border-radius: 10px;
     position: relative;
     overflow: hidden;

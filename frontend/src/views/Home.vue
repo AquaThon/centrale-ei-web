@@ -8,11 +8,11 @@
     <h3>Movies</h3>
     <div class="cards">
       <Movie v-for="movie in movies"
-        :key="movie.id"
-        :movieId="movie.id"
-        :movieOriginalTitle=movie.title
+        :key=movie.id
+        :movieId=movie.id
+        :movieOriginalTitle=movie.originalTitle
         :movieDescription=movie.overview
-        :moviePosterPath="`https://image.tmdb.org/t/p/w500${movie.poster_path}`"
+        :moviePosterPath=movie.posterPath
       />
     </div>
   </div>
@@ -37,13 +37,13 @@ export default {
   created: function () {
     console.log("Loading API")
     axios
-    .get(`https://api.themoviedb.org/3/trending/movie/day?api_key=${this.apiKey}`)
+    .get(`${VUE_APP_BACKEND_BASE_URL}/movies`)
     .then(this.fetchMovies)
     .catch(this.apiCallFailure)
   },
   methods: {
     fetchMovies: function (response) {
-      this.movies = response.data.results
+      this.movies = response.data.movies
       console.log("Fetched movies")
     },
     apiCallFailure: function (error) {
