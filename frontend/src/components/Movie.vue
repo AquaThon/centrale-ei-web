@@ -1,7 +1,7 @@
 <template>
   <article class="card">
     <div class="mainTitle">
-      <img :alt=this.moviePosterPath :src=this.moviePosterPath />
+      <img :alt=this.moviePosterPath :src="`https://image.tmdb.org/t/p/w500${this.moviePosterPath}`" />
       <h3 class="title">{{ movieOriginalTitle }}</h3>
     </div>
     <a :href="`/movies/show/${this.movieId}`">
