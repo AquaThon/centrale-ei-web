@@ -5,9 +5,8 @@
     <input v-model="movieName" placeholder="Movie Name" />
     <p>Number of pages: {{ page }}</p>
     <p>Movie name is: {{ movieName }}</p>
-    <h2 v-if="loading"> Please wait...</h2>
-    <ul v-if="loading == false" id="array-rendering">
-      <li v-for="(movie,index) in movies.filter(movie => movie.originalTitle.toLowerCase().includes(movieName.toLowerCase()))" :key="index">
+    <ul id="array-rendering">
+      <li v-for="(movie,index) in movies.filter(movie => movie.original_title.toLowerCase().includes(movieName.toLowerCase()))" :key="index">
         <Movie :movie="movie"/>
       </li>
     </ul>
@@ -27,7 +26,6 @@ export default {
       movieName: "",
       movies: [],
       page: 1,
-      loading: true
     }
   },
   name: "Home",
@@ -41,11 +39,9 @@ export default {
     },
     fetchMovies: function () {
       axios
-        .get(`http://localhost:3000/movies/`)
+        .get(`https://api.themoviedb.org/3/movie/popular?api_key=522d421671cf75c2cba341597d86403a&language=en-US&page=` + this.page)
         .then((response) => {
-         console.log(response.data.movies);
-         this.movies = response.data.movies;
-         this.loading = false;
+         this.movies = this.movies.concat(response.data.results);
        })
        .catch((error) => {
          console.log(error)
