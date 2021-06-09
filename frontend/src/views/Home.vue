@@ -1,63 +1,73 @@
 <template>
   <div class="home">
-    <img src="../assets/movie.png" />
-    <h1>! Films du jour !</h1>
-    <input v-model="movieName" placeholder="Movie Name" />
-    <p>Number of pages: {{ page }}</p>
-    <p>Movie name is: {{ movieName }}</p>
-    <ul id="array-rendering">
-      <li v-for="(movie,index) in movies.filter(movie => movie.original_title.toLowerCase().includes(movieName.toLowerCase()))" :key="index">
-        <Movie :movie="movie"/>
-      </li>
-    </ul>
-    <button @click="morePages()"> Show More !</button>
+    <img alt="Vue logo" src="../assets/logo.jpg" class="logo" />
+    <h1>Bienvenue sur le site du CineVR !</h1>
+    <p>
+      <input type="text" v-model="movieName" placeholder="Type a movie name here">
+    </p>
+    <h3>Movies</h3>
+    <div class="cards">
+      <Movie v-for="movie in movies"
+        :key=movie.id
+        :movieId=movie.id
+        :movieOriginalTitle=movie.originalTitle
+        :movieDescription=movie.overview
+        :moviePosterPath=movie.posterPath
+      />
+    </div>
   </div>
 </template>
 
 <script>
-
-import Movie from "@/components/Movie.vue";
 import axios from "axios";
-
+import Movie from "@/components/Movie.vue";
 
 export default {
+  name: "Home",
+  components: {
+    Movie
+  },
   data: function () {
     return {
+      apiKey: "522d421671cf75c2cba341597d86403a",
       movieName: "",
-      movies: [],
-      page: 1,
-    }
+      movies: []
+    };
   },
-  name: "Home",
   created: function () {
-    this.fetchMovies()
+    console.log("Loading API")
+    axios
+    .get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies`)
+    .then(this.fetchMovies)
+    .catch(this.apiCallFailure)
   },
   methods: {
-    morePages: function () {
-      this.page = this.page + 1;
-      this.fetchMovies()
+    fetchMovies: function (response) {
+      this.movies = response.data.movies
+      console.log("Fetched movies")
     },
-    fetchMovies: function () {
-      axios
-        .get(`https://api.themoviedb.org/3/movie/popular?api_key=522d421671cf75c2cba341597d86403a&language=en-US&page=` + this.page)
-        .then((response) => {
-         this.movies = this.movies.concat(response.data.results);
-       })
-       .catch((error) => {
-         console.log(error)
-      });
-    },
+    apiCallFailure: function (error) {
+      console.log(error)
+    }
   },
-  components: {
-    Movie,
-  }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .home {
   text-align: center;
+  color: #1d1d1d;
+}
+
+.logo {
+  max-height: 150px;
+  max-width: 200px;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 h3 {
@@ -76,9 +86,5 @@ li {
 
 a {
   color: #42b983;
-}
-
-#array-rendering {
-  flex-wrap: wrap;
 }
 </style>
