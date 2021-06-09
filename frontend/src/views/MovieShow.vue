@@ -8,14 +8,23 @@
       {{ this.movieDescription }}
     </div>
   </div>
+  <div class="movieshow-rating">
+    <Stars
+      :rate="3"
+    />
+  </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import axios from "axios";
+import Stars from "@/components/Stars.vue";
 
 export default {
   name: "MovieShow",
+  components: {
+    Stars,
+  },
   data: function () {
     return {
       movieId: this.$route.params.movieId,
