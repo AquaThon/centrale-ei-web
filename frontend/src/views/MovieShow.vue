@@ -32,7 +32,7 @@ export default {
         )
         .then((response) => {
           this.movieOriginalTitle = response.data.movieOriginalTitle;
-          this.moviePosterPath = response.data.moviePosterPath;
+          this.moviePosterPath = `https://image.tmdb.org/t/p/w500${response.data.moviePosterPath}`;
           this.movieDescription = response.data.movieDescription;
         })
         .catch((error) => {
