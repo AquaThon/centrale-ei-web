@@ -14,9 +14,14 @@ const populateMovieDatabase = function (pages) {
             id: movie.id,
             originalTitle: movie.original_title,
             releaseDate: movie.release_date,
-            posterPath: `https://image.tmdb.org/t/p/w500` + movie.poster_path,
+            posterPath:
+              movie.poster_path !== null
+                ? `https://image.tmdb.org/t/p/w500` + movie.poster_path
+                : null,
             backdropPath:
-              `https://image.tmdb.org/t/p/w500` + movie.backdrop_path,
+              movie.backdrop_path !== null
+                ? `https://image.tmdb.org/t/p/w500` + movie.backdrop_path
+                : null,
             genreIds: movie.genre_ids,
             originalLanguage: movie.original_language,
             overview: movie.overview,
