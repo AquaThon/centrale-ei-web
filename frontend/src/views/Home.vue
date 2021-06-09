@@ -17,7 +17,7 @@
         :movieId="movie.id"
         :movieOriginalTitle="movie.originalTitle"
         :movieDescription="movie.overview"
-        :moviePosterPath="`https://image.tmdb.org/t/p/w500` + movie.posterPath"
+        :moviePosterPath="movie.posterPath"
       />
     </div>
   </div>
