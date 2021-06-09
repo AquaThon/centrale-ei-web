@@ -41,7 +41,7 @@ router.post("/populate", function (req, res) {
   res.json({ message: "DONE" });
 });
 
-router.post("/new", function (req, res) {
+router.post("/add", function (req, res) {
   const newMovie = new MovieModel({
     id: req.body.id,
     originalTitle: req.body.original_title,
@@ -72,6 +72,21 @@ router.post("/new", function (req, res) {
         res.status(500).json({ message: "Error while creating the movie" });
       }
     });
+});
+
+router.post("/edit", function (req, res) {
+  MovieModel.findOneAndUpdate(
+    { id: req.body.id },
+    req.body,
+    { useFindAndModify: false },
+    function (err) {
+      if (err) res.status(500).json({ message: err });
+      else
+        res.status(201).json({
+          message: `Successfully updated movie with id ${req.body.id} !`,
+        });
+    }
+  );
 });
 
 module.exports = router;
