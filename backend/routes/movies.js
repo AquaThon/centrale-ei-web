@@ -9,6 +9,23 @@ router.get("/", function (req, res) {
   });
 });
 
+router.get("/show/:movieId", function (req, res) {
+  MovieModel.findOne({ id: req.params.movieId }).then(function (movie) {
+    res.json({ movie: movie });
+  });
+});
+
+router.get("/search", function (req, res) {
+  MovieModel.find({
+    $or: [
+      { title: { $regex: req.query.title, $options: "i" } },
+      { originalTitle: { $regex: req.query.title, $options: "i" } },
+    ],
+  }).then(function (movies) {
+    res.json({ movies: movies });
+  });
+});
+
 router.delete("/delete", function (req, res) {
   MovieModel.deleteOne({ id: req.body.id }, function (err) {
     if (err) res.status(500).json({ message: err });
@@ -20,7 +37,7 @@ router.delete("/delete", function (req, res) {
 });
 
 router.post("/populate", function (req, res) {
-  populateDatabase(8);
+  populateDatabase(req.body.pages);
   res.json({ message: "DONE" });
 });
 
