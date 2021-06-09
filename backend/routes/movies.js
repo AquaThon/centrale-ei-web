@@ -15,6 +15,17 @@ router.get("/show/:movieId", function (req, res) {
   });
 });
 
+router.get("/search", function (req, res) {
+  MovieModel.find({
+    $or: [
+      { title: { $regex: req.query.title, $options: "i" } },
+      { originalTitle: { $regex: req.query.title, $options: "i" } },
+    ],
+  }).then(function (movies) {
+    res.json({ movies: movies });
+  });
+});
+
 router.delete("/delete", function (req, res) {
   MovieModel.deleteOne({ id: req.body.id }, function (err) {
     if (err) res.status(500).json({ message: err });
@@ -26,7 +37,6 @@ router.delete("/delete", function (req, res) {
 });
 
 router.post("/populate", function (req, res) {
-  console.log(req.query.test);
   populateDatabase(req.body.pages);
   res.json({ message: "DONE" });
 });
@@ -35,6 +45,7 @@ router.post("/new", function (req, res) {
   const newMovie = new MovieModel({
     id: req.body.id,
     originalTitle: req.body.original_title,
+    originalTitleLower: req.body.original_title.toLowerCase(),
     releaseDate: req.body.release_date,
     posterPath: req.body.poster_path,
     backdropPath: req.body.backdrop_path,
@@ -43,6 +54,7 @@ router.post("/new", function (req, res) {
     overview: req.body.overview,
     popularity: req.body.popularity,
     title: req.body.title,
+    titleLower: req.body.title.toLowerCase(),
     video: req.body.video,
     voteAverage: req.body.vote_average,
     voteCount: req.body.vote_count,
