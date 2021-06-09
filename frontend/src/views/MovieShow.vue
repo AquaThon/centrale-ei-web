@@ -5,13 +5,12 @@
       <img class="movieshow-inner-image" :alt="moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)" :src="moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)" />
     </div>
     <div class="movieshow-description">
-      {{ this.movieDescription }}
+      <p>
+        {{ this.movieDescription }}
+      </p>
+      <Stars :rate="3" />
     </div>
-  </div>
-  <div class="movieshow-rating">
-    <Stars
-      :rate="3"
-    />
+
   </div>
 </template>
 
