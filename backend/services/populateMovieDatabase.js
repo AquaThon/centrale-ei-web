@@ -2,7 +2,6 @@ const MovieModel = require("../models/movie");
 const axios = require("axios").default;
 
 const populateMovieDatabase = function (pages) {
-  console.log("heyo");
   for (let page = 1; page <= pages; page++) {
     axios
       .get(
