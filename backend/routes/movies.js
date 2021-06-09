@@ -9,6 +9,12 @@ router.get("/", function (req, res) {
   });
 });
 
+router.get("/show/:movieId", function (req, res) {
+  MovieModel.findOne({ id: req.params.movieId }).then(function (movie) {
+    res.json({ movie: movie });
+  });
+});
+
 router.delete("/delete", function (req, res) {
   MovieModel.deleteOne({ id: req.body.id }, function (err) {
     if (err) res.status(500).json({ message: err });
@@ -20,7 +26,8 @@ router.delete("/delete", function (req, res) {
 });
 
 router.post("/populate", function (req, res) {
-  populateDatabase(8);
+  console.log(req.query.test);
+  populateDatabase(req.body.pages);
   res.json({ message: "DONE" });
 });
 
