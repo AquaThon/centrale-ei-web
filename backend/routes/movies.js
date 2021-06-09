@@ -45,7 +45,6 @@ router.post("/new", function (req, res) {
   const newMovie = new MovieModel({
     id: req.body.id,
     originalTitle: req.body.original_title,
-    originalTitleLower: req.body.original_title.toLowerCase(),
     releaseDate: req.body.release_date,
     posterPath: req.body.poster_path,
     backdropPath: req.body.backdrop_path,
@@ -54,7 +53,6 @@ router.post("/new", function (req, res) {
     overview: req.body.overview,
     popularity: req.body.popularity,
     title: req.body.title,
-    titleLower: req.body.title.toLowerCase(),
     video: req.body.video,
     voteAverage: req.body.vote_average,
     voteCount: req.body.vote_count,
