@@ -4,9 +4,11 @@ const populateDatabase = require("../services/populateMovieDatabase");
 const router = express.Router();
 
 router.get("/", function (req, res) {
-  MovieModel.find({}).then(function (movies) {
-    res.json({ movies: movies });
-  });
+  MovieModel.find({})
+    .sort(req.query.sortBy)
+    .then(function (movies) {
+      res.json({ movies: movies });
+    });
 });
 
 router.get("/show/:movieId", function (req, res) {
