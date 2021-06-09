@@ -31,9 +31,9 @@ export default {
           `${process.env.VUE_APP_BACKEND_BASE_URL}/movies/show/${this.movieId}`
         )
         .then((response) => {
-          this.movieOriginalTitle = response.data.movieOriginalTitle;
-          this.moviePosterPath = `https://image.tmdb.org/t/p/w500${response.data.moviePosterPath}`;
-          this.movieDescription = response.data.movieDescription;
+          this.movieOriginalTitle = response.data.movie.movieOriginalTitle;
+          this.moviePosterPath = `https://image.tmdb.org/t/p/w500${response.data.movie.moviePosterPath}`;
+          this.movieDescription = response.data.movie.movieDescription;
         })
         .catch((error) => {
           this.usersLoadingError = "An error occured while fetching movie details.";
