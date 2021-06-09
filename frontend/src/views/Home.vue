@@ -12,7 +12,7 @@
         :movieId=movie.id
         :movieOriginalTitle=movie.originalTitle
         :movieDescription=movie.overview
-        :moviePosterPath=movie.posterPath
+        :moviePosterPath="`https://image.tmdb.org/t/p/w500` + movie.posterPath"
       />
     </div>
   </div>
@@ -30,6 +30,7 @@ export default {
   data: function () {
     return {
       apiKey: "522d421671cf75c2cba341597d86403a",
+      placeHolderPosterPath: "@/assets/posterPlaceHolder.png",
       movieName: "",
       movies: []
     };
@@ -68,6 +69,7 @@ export default {
 .cards {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 h3 {
