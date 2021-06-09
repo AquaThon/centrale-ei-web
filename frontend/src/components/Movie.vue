@@ -1,32 +1,68 @@
 <template>
-    <div class=movie-card>
-        <img v-if="movie.poster_path!==null" :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" />
-        <img v-if="movie.poster_path===null" src="../assets/no_poster.png" />
-        <h2>{{ movie.original_title}} : {{ movie.release_date}}</h2>
+  <article class="card">
+    <div class="mainTitle">
+      <img :alt=this.moviePosterPath :src=this.moviePosterPath />
+      <h3 class="title">{{ movieOriginalTitle }}</h3>
     </div>
+    <a :href="`/movies/show/${this.movieId}`">
+      <div class="description" >
+        {{ movieDescription }}
+      </div>
+    </a>
+  </article>
 </template>
 
 <script>
 export default {
-    props: {
-        movie: Object,
-    },
-    // data: function () {
-    //     return {
-    //         img: ''
-    //     }
-    // },
-    // mounted: function () {
-    //     this.img= "https://image.tmdb.org/t/p/w500" + this.movie.poster_path;
-    // }
-}
+  name: "Movie",
+  props: {
+    movieId: "",
+    movieOriginalTitle: "",
+    moviePosterPath: "",
+    movieDescription: "",
+  },
+};
 </script>
 
-<style scoped>
-.movie-card {
-    text-align: center;
-}
-h2 {
-    width: 500px;
-}
+<style>
+  .card {
+    flex: 0 0 250px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 6px 0px  rgba(0,0,0,0.3);
+    background: #f0f0f0;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card img {
+    max-width: 100%;
+  }
+  .card .mainTitle {
+    z-index: 0;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+  }
+  .card .mainTitle .title {
+    padding: 0 20px 20px;
+  }
+  .card .description {
+    z-index: 1;
+    text-align: justify;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    color: rgba(0,0,0,0.0);
+    transition: 300ms ease;
+  }
+  .card .description:hover {
+    color: rgba(255, 255, 255, 1);
+    background: rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+  }
 </style>
