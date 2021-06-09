@@ -14,7 +14,7 @@ const populateMovieDatabase = function (pages) {
             id: movie.id,
             originalTitle: movie.original_title,
             releaseDate: movie.release_date,
-            posterPath: movie.poster_path,
+            posterPath: `https://image.tmdb.org/t/p/w500` + movie.poster_path,
             backdropPath: movie.backdrop_path,
             genreIds: movie.genre_ids,
             originalLanguage: movie.original_language,
