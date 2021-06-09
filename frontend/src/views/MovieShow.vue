@@ -19,9 +19,9 @@ export default {
     };
   },
   methods: {
-    fetchUsers: function () {
+    fetchData: function () {
       axios
-        .get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies/details/${movieId}`)
+        .get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies/details/${this.movieId}`)
         .then((response) => {
           this.movieOriginalTitle = response.data.movieOriginalTitle;
           this.moviePosterPath = response.data.moviePosterPath;
@@ -33,5 +33,11 @@ export default {
         });
     },
   },
+  created: function () {
+    this.fetchData();
+  }
 };
 </script>
+
+<style>
+</style>

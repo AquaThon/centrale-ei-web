@@ -1,12 +1,15 @@
 <template>
   <article class="card">
     <div class="mainTitle">
-      <img :alt=this.moviePosterPath :src="`https://image.tmdb.org/t/p/w500${this.moviePosterPath}`" />
+      <img :alt=this.moviePosterPath :src=this.moviePosterPath />
       <h3 class="title">{{ movieOriginalTitle }}</h3>
     </div>
     <a :href="`/movies/show/${this.movieId}`">
-      <div class="description" >
+      <div class="description" v-if="movieDescription !== ''">
         {{ movieDescription }}
+      </div>
+      <div class="description" v-if="movieDescription === ''">
+        There is no description of this movie...
       </div>
     </a>
   </article>
@@ -54,8 +57,6 @@ export default {
     padding-left: 10px;
     padding-right: 10px;
     height: 100%;
-    top: 0;
-    left: 0;
     position: absolute;
     color: rgba(0,0,0,0.0);
     transition: 300ms ease;
