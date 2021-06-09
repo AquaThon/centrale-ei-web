@@ -2,7 +2,7 @@
   <p class="movieshow-title">{{ this.movieOriginalTitle }}</p>
   <div class="movieshow-container">
     <div class="movieshow-img" >
-      <img class="movieshow-inner-image" :alt="moviePosterPath != null ? moviePosterPath : require(`@/assets/noImage.png`)" :src="moviePosterPath != null ? moviePosterPath : require(`@/assets/noImage.png`)" />
+      <img class="movieshow-inner-image" :alt="moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)" :src="moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)" />
     </div>
     <div class="movieshow-description">
       {{ this.movieDescription }}

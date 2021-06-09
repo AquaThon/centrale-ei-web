@@ -9,7 +9,7 @@
       </div>
     </a>
     <div class="mainTitle">
-      <img :alt="moviePosterPath != null ? moviePosterPath : require(`@/assets/noImage.png`)" :src="moviePosterPath != null ? moviePosterPath : require(`@/assets/noImage.png`)" />
+      <img :alt="moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)" :src="moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)" />
       <h3 class="title">{{ movieOriginalTitle }}</h3>
     </div>
   </article>
