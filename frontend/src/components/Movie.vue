@@ -1,9 +1,5 @@
 <template>
   <article class="card">
-    <div class="mainTitle">
-      <img :alt=this.moviePosterPath :src=this.moviePosterPath />
-      <h3 class="title">{{ movieOriginalTitle }}</h3>
-    </div>
     <a :href="`/movies/show/${this.movieId}`">
       <div class="description" v-if="movieDescription !== ''">
         {{ movieDescription }}
@@ -12,6 +8,10 @@
         There is no description of this movie...
       </div>
     </a>
+    <div class="mainTitle">
+      <img :alt=this.moviePosterPath :src=this.moviePosterPath />
+      <h3 class="title">{{ movieOriginalTitle }}</h3>
+    </div>
   </article>
 </template>
 
@@ -42,7 +42,6 @@ export default {
     max-width: 100%;
   }
   .card .mainTitle {
-    z-index: 0;
     max-width: 100%;
     width: 100%;
     height: 100%;
@@ -51,7 +50,6 @@ export default {
     padding: 0 20px 20px;
   }
   .card .description {
-    z-index: 1;
     text-align: justify;
     padding-top: 10px;
     padding-left: 10px;
