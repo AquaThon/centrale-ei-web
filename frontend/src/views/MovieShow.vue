@@ -51,10 +51,13 @@ export default {
         });
     },
     redirectEdit: function () {
-      document.location.href=`/movies/edit/${this.movieId}`;
+      this.$router.push(`/movies/edit/${this.movieId}`);
     }
   },
   created: function () {
+    if (this.$root.currentUserEmail === null) {
+      this.$router.push("/users");
+    };
     this.fetchData();
   },
 };

@@ -8,6 +8,17 @@
   <router-view />
 </template>
 
+<script>
+export default {
+  data: function () {
+    return {
+      currentUserEmail: null,
+    }
+  }
+}
+</script>
+
+
 <style scoped>
 .nav {
   text-align: center;
