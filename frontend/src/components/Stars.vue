@@ -1,14 +1,14 @@
 <template>
   <div class="rating">
-    <input type="radio" name="rating" id="rating-5" v-on:click="sendRating(5)">
+    <input type="radio" name="rating" id="rating-5" v-on:click="sendRating(5)" :checked="rate === 5">
     <label for="rating-5"></label>
-    <input type="radio" name="rating" id="rating-4" v-on:click="sendRating(4)">
+    <input type="radio" name="rating" id="rating-4" v-on:click="sendRating(4)" :checked="rate === 4">
     <label for="rating-4"></label>
-    <input type="radio" name="rating" id="rating-3" v-on:click="sendRating(3)">
+    <input type="radio" name="rating" id="rating-3" v-on:click="sendRating(3)" :checked="rate === 3">
     <label for="rating-3"></label>
-    <input type="radio" name="rating" id="rating-2" v-on:click="sendRating(2)">
+    <input type="radio" name="rating" id="rating-2" v-on:click="sendRating(2)" :checked="rate === 2">
     <label for="rating-2"></label>
-    <input type="radio" name="rating" id="rating-1" v-on:click="sendRating(1)">
+    <input type="radio" name="rating" id="rating-1" v-on:click="sendRating(1)" :checked="rate === 1">
     <label for="rating-1"></label>
   </div>
 </template>
@@ -21,15 +21,25 @@ export default {
   props: {
     movieId: 0,
   },
+  data: function () {
+    return {
+      rate: 0,
+    }
+  },
   methods: {
     sendRating: function (rate) {
+      this.rate = rate;
       axios.post(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies/rate`, {
         "movie": this.movieId,
-        "user": this.user,
+        "user": this.$root.currentUserEmail,
         "rate": rate,
       })
       .then((res) => {
-        console.log(res);
+        if (res.status === 201) {
+          this.rate = res.data.rate;
+        } else {
+          console.log(res);
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -40,6 +50,7 @@ export default {
     axios.get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies/rate`, { params: { "user": this.$root.currentUserEmail, "movie": this.movieId } })
     .then((response) => {
       this.rate = response.data.rate;
+      console.log(this.rate);
     })
     .catch((error) => {
       console.log(error);
@@ -54,10 +65,6 @@ export default {
   justify-content: center;
   overflow: hidden;
   flex-direction: row-reverse;
-}
-
-.rating-0 {
-  filter: grayscale(100%);
 }
 
 .rating > input {
