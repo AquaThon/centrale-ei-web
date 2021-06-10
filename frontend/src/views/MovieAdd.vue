@@ -94,7 +94,8 @@ export default {
       })
       .then((res) => {
         if (res.status === 201) {
-          movieId = res.data.movie.id;
+          console.log(res)
+          const movieId = res.data.id;
           document.location.href=`/movies/show/${movieId}`;
         } else {
           console.log(res);
