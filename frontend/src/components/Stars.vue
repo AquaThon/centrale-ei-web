@@ -1,24 +1,50 @@
 <template>
   <div class="rating">
-    <input type="radio" name="rating" id="rating-5">
+    <input type="radio" name="rating" id="rating-5" v-on:click="sendRating(5)">
     <label for="rating-5"></label>
-    <input type="radio" name="rating" id="rating-4">
+    <input type="radio" name="rating" id="rating-4" v-on:click="sendRating(4)">
     <label for="rating-4"></label>
-    <input type="radio" name="rating" id="rating-3">
+    <input type="radio" name="rating" id="rating-3" v-on:click="sendRating(3)">
     <label for="rating-3"></label>
-    <input type="radio" name="rating" id="rating-2">
+    <input type="radio" name="rating" id="rating-2" v-on:click="sendRating(2)">
     <label for="rating-2"></label>
-    <input type="radio" name="rating" id="rating-1">
+    <input type="radio" name="rating" id="rating-1" v-on:click="sendRating(1)">
     <label for="rating-1"></label>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Movie",
   props: {
-    rate: "",
+    movieId: 0,
   },
+  methods: {
+    sendRating: function (rate) {
+      axios.post(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies/rate`, {
+        "movie": this.movieId,
+        "user": this.user,
+        "rate": rate,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    }
+  },
+  created: function () {
+    axios.get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies/rate`, { params: { "user": this.$root.currentUserEmail, "movie": this.movieId } })
+    .then((response) => {
+      this.rate = response.data.rate;
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
 };
 </script>
 

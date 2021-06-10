@@ -8,7 +8,7 @@
       <p>
         {{ this.movieDescription }}
       </p>
-      <Stars :rate="3" />
+      <Stars v-if="movieId" :movieId="this.movieId" />
       <button @click="redirectEdit()">Edit informations</button>
     </div>
 
