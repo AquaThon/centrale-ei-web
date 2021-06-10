@@ -101,14 +101,20 @@ router.post("/edit", function (req, res) {
 
 router.post("/rate", function (req, res) {
   const newRate = {
-    userMoviePair: { userEmail: req.body.user, movieId: req.body.movie },
+    userMoviePair: {
+      userEmail: req.body.user,
+      movieId: parseInt(req.body.movie),
+    },
     userEmail: req.body.user,
-    movieId: req.body.movie,
-    rate: req.body.rate,
+    movieId: parseInt(req.body.movie),
+    rate: parseInt(req.body.rate),
   };
   RateModel.findOneAndUpdate(
     {
-      userMoviePair: { userEmail: req.body.user, movieId: req.body.movie },
+      userMoviePair: {
+        userEmail: req.body.user,
+        movieId: parseInt(req.body.movie),
+      },
     },
     newRate,
     { new: true, upsert: true, useFindAndModify: false },
@@ -119,12 +125,12 @@ router.post("/rate", function (req, res) {
   );
   MovieModel.findOne({ id: req.body.movie }).then((movie) => {
     MovieModel.findOneAndUpdate(
-      { id: req.body.movie },
+      { id: parseInt(req.body.movie) },
       {
         $set: {
           voteCount: movie.voteCount + 1,
           voteAverage:
-            (movie.voteAverage * movie.voteCount + req.body.rate) /
+            (movie.voteAverage * movie.voteCount + parseInt(req.body.rate)) /
             (movie.voteCount + 1),
         },
       },
