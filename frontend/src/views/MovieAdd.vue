@@ -80,6 +80,11 @@ export default {
       errorMessage: "",
     };
   },
+  created: function () {
+    if (this.$root.currentUserEmail === null) {
+      this.$router.push("/users");
+    };
+  },
   methods: {
     submit: function () {
       console.log("")
@@ -96,7 +101,7 @@ export default {
         if (res.status === 201) {
           console.log(res)
           const movieId = res.data.id;
-          document.location.href=`/movies/show/${movieId}`;
+          this.$router.push(`/movies/show/${movieId}`);
         } else {
           console.log(res);
           this.errorMessage = "Request failed";
@@ -108,7 +113,7 @@ export default {
       })
     },
     cancel: function () {
-      document.location.href="/";
+      this.$router.push("/");
     },
   },
 };

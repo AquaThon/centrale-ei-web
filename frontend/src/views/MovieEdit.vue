@@ -99,7 +99,7 @@ export default {
       })
       .then((res) => {
         if (res.status === 201) {
-          document.location.href=`/movies/show/${this.id}`;
+          this.$router.push(`/movies/show/${this.id}`);
         } else {
           console.log(res);
           this.errorMessage = "Request failed";
@@ -111,10 +111,13 @@ export default {
       })
     },
     cancel: function () {
-      document.location.href="/";
+      this.$router.push("/");
     },
   },
   created: function () {
+    if (this.$root.currentUserEmail === null) {
+      this.$router.push("/users");
+    };
     axios.get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies/show/${this.id}`)
     .then((response) => {
       this.originalTitle= response.data.movie.originalTitle;

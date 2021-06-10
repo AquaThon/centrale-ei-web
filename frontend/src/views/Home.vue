@@ -42,6 +42,9 @@ export default {
     };
   },
   created: function () {
+    if (this.$root.currentUserEmail === null) {
+      this.$router.push("/users");
+    };
     console.log("Loading API");
     axios
       .get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies`)

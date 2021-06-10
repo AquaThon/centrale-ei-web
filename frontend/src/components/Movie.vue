@@ -1,6 +1,6 @@
 <template>
   <article class="card">
-    <a :href="`/movies/show/${this.movieId}`">
+    <a href="#" v-on:click="redirect()">
       <div class="description" v-if="movieDescription !== ''">
         {{ movieDescription }}
       </div>
@@ -24,6 +24,12 @@ export default {
     moviePosterPath: "",
     movieDescription: "",
   },
+  methods: {
+    redirect : function ()  {
+      this.$router.push(`/movies/show/${this.movieId}`);
+      return false;
+    }
+  }
 };
 </script>
 
