@@ -1,6 +1,7 @@
 const express = require("express");
 const MovieModel = require("../models/movie");
 const RateModel = require("../models/rate");
+const purgeMovie = require("../services/purgeMovie");
 const populateDatabase = require("../services/populateMovieDatabase");
 const router = express.Router();
 
@@ -30,6 +31,7 @@ router.get("/search", function (req, res) {
 });
 
 router.delete("/delete", function (req, res) {
+  purgeMovie(req.body.id);
   MovieModel.deleteOne({ id: req.body.id }, function (err) {
     if (err) res.status(500).json({ message: err });
     else
