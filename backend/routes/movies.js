@@ -109,12 +109,17 @@ router.post("/rate", function (req, res) {
       userMoviePair: { userEmail: req.body.user, movieId: req.body.movie },
     },
     newRate,
+<<<<<<< HEAD
     { new: true, upsert: true, useFindAndModify: false },
+=======
+    { new: true, upsert: true },
+>>>>>>> add rating feature
     function (err) {
       if (err) res.status(500).json({ message: err });
       else res.status(201).json(newRate);
     }
   );
+<<<<<<< HEAD
   MovieModel.findOne({ id: req.body.movie }).then((movie) => {
     MovieModel.findOneAndUpdate(
       { id: req.body.movie },
@@ -172,6 +177,8 @@ router.post("/rate", function (req, res) {
           }
         });
     });
+=======
+>>>>>>> add rating feature
 });
 
 module.exports = router;
