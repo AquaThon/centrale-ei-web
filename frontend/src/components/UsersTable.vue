@@ -33,7 +33,7 @@ export default {
     },
     deleteUser: function (email) {
       axios
-      .delete(`${process.env.VUE_APP_BACKEND_BASE_URL}/users/delete`, { params: { "user": email } })
+      .delete(`${process.env.VUE_APP_BACKEND_BASE_URL}/users/delete`, { params: { "email": email } })
       .then((res) => {
         console.log(res)
       })
