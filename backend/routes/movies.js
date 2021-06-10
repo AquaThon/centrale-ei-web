@@ -90,51 +90,29 @@ router.post("/edit", function (req, res) {
     { useFindAndModify: false },
     function (err) {
       if (err) res.status(500).json({ message: err });
-      else
-        res.status(201).json({
-          message: `Successfully updated movie with id ${req.body.id} !`,
-        });
+      else res.status(201).json(req.body);
     }
   );
 });
 
 router.post("/rate", function (req, res) {
-  RateModel.findOne({})
-    .sort("id")
-    .then((data) => {
-      const newMovie = new MovieModel({
-        id: Math.min(data.id - 1, -1),
-        originalTitle: req.body.originalTitle,
-        releaseDate: req.body.releaseDate,
-        posterPath: req.body.posterPath,
-        backdropPath: req.body.backdropPath,
-        genreIds: req.body.genreIds,
-        originalLanguage: req.body.originalLanguage,
-        overview: req.body.overview,
-        popularity: req.body.popularity,
-        title: req.body.title,
-        video: req.body.video,
-        voteAverage: req.body.voteAverage,
-        voteCount: req.body.voteCount,
-      });
-
-      newMovie
-        .save()
-        .then(function (newDocument) {
-          res.status(201).json(newDocument);
-        })
-        .catch(function (error) {
-          if (error.code === 11000) {
-            res.status(400).json({
-              message: `Movie with id ${newMovie.id} already exists`,
-            });
-          } else {
-            res
-              .status(500)
-              .json({ message: error + " while creating the movie" });
-          }
-        });
-    });
+  const newRate = {
+    userMoviePair: { userEmail: req.body.user, movieId: req.body.movie },
+    userEmail: req.body.user,
+    movieId: req.body.movie,
+    rate: req.body.rate,
+  };
+  RateModel.findOneAndUpdate(
+    {
+      userMoviePair: { userEmail: req.body.user, movieId: req.body.movie },
+    },
+    newRate,
+    { new: true, upsert: true },
+    function (err) {
+      if (err) res.status(500).json({ message: err });
+      else res.status(201).json(newRate);
+    }
+  );
 });
 
 module.exports = router;
