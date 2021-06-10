@@ -8,6 +8,8 @@ const router = express.Router();
 router.get("/", function (req, res) {
   MovieModel.find({})
     .sort(req.query.sortBy)
+    .skip(req.query.skip)
+    .limit(req.query.limit)
     .then(function (movies) {
       res.json({ movies: movies });
     });
