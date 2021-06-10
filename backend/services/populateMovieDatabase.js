@@ -17,11 +17,11 @@ const populateMovieDatabase = function (pages) {
             posterPath:
               movie.poster_path !== null
                 ? `https://image.tmdb.org/t/p/w500` + movie.poster_path
-                : null,
+                : undefined,
             backdropPath:
               movie.backdrop_path !== null
                 ? `https://image.tmdb.org/t/p/w500` + movie.backdrop_path
-                : null,
+                : undefined,
             genreIds: movie.genre_ids,
             originalLanguage: movie.original_language,
             overview: movie.overview,

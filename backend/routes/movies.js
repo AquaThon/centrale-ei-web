@@ -44,35 +44,41 @@ router.post("/populate", function (req, res) {
 });
 
 router.post("/add", function (req, res) {
-  const newMovie = new MovieModel({
-    id: req.body.id,
-    originalTitle: req.body.original_title,
-    releaseDate: req.body.release_date,
-    posterPath: req.body.poster_path,
-    backdropPath: req.body.backdrop_path,
-    genreIds: req.body.genre_ids,
-    originalLanguage: req.body.original_language,
-    overview: req.body.overview,
-    popularity: req.body.popularity,
-    title: req.body.title,
-    video: req.body.video,
-    voteAverage: req.body.vote_average,
-    voteCount: req.body.vote_count,
-  });
+  MovieModel.findOne({})
+    .sort("id")
+    .then((data) => {
+      const newMovie = new MovieModel({
+        id: Math.min(data.id - 1, -1),
+        originalTitle: req.body.originalTitle,
+        releaseDate: req.body.releaseDate,
+        posterPath: req.body.posterPath,
+        backdropPath: req.body.backdropPath,
+        genreIds: req.body.genreIds,
+        originalLanguage: req.body.originalLanguage,
+        overview: req.body.overview,
+        popularity: req.body.popularity,
+        title: req.body.title,
+        video: req.body.video,
+        voteAverage: req.body.voteAverage,
+        voteCount: req.body.voteCount,
+      });
 
-  newMovie
-    .save()
-    .then(function (newDocument) {
-      res.status(201).json(newDocument);
-    })
-    .catch(function (error) {
-      if (error.code === 11000) {
-        res.status(400).json({
-          message: `Movie with id ${newMovie.id} already exists`,
+      newMovie
+        .save()
+        .then(function (newDocument) {
+          res.status(201).json(newDocument);
+        })
+        .catch(function (error) {
+          if (error.code === 11000) {
+            res.status(400).json({
+              message: `Movie with id ${newMovie.id} already exists`,
+            });
+          } else {
+            res
+              .status(500)
+              .json({ message: error + " while creating the movie" });
+          }
         });
-      } else {
-        res.status(500).json({ message: "Error while creating the movie" });
-      }
     });
 });
 
