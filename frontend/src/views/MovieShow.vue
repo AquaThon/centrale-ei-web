@@ -9,6 +9,7 @@
         {{ this.movieDescription }}
       </p>
       <Stars :rate="3" />
+      <button @click="redirectEdit()">Edit informations</button>
     </div>
 
   </div>
@@ -49,6 +50,9 @@ export default {
           console.error(error);
         });
     },
+    redirectEdit: function () {
+      document.location.href=`/movies/edit/${this.movieId}`;
+    }
   },
   created: function () {
     this.fetchData();
