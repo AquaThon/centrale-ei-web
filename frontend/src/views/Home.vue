@@ -8,6 +8,7 @@
         v-model="movieName"
         placeholder="Type a movie name here"
       />
+      <button @click="search()">Search</button>
     </p>
     <h3>Movies</h3>
     <div class="cards">
@@ -55,6 +56,17 @@ export default {
     apiCallFailure: function (error) {
       console.log(error);
     },
+    search: function () {
+      axios
+      .get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies/search`, { params: { "title": this.movieName } })
+      .then((response) => {
+        this.movies = response.data.movies;
+        console.log("changed search")
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
   },
 };
 </script>

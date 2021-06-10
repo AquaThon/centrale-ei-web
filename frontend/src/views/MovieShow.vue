@@ -5,17 +5,26 @@
       <img class="movieshow-inner-image" :alt="moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)" :src="moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)" />
     </div>
     <div class="movieshow-description">
-      {{ this.movieDescription }}
+      <p>
+        {{ this.movieDescription }}
+      </p>
+      <Stars :rate="3" />
+      <button @click="redirectEdit()">Edit informations</button>
     </div>
+
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import axios from "axios";
+import Stars from "@/components/Stars.vue";
 
 export default {
   name: "MovieShow",
+  components: {
+    Stars,
+  },
   data: function () {
     return {
       movieId: this.$route.params.movieId,
@@ -41,6 +50,9 @@ export default {
           console.error(error);
         });
     },
+    redirectEdit: function () {
+      document.location.href=`/movies/edit/${this.movieId}`;
+    }
   },
   created: function () {
     this.fetchData();
