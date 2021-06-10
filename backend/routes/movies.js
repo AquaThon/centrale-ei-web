@@ -8,6 +8,8 @@ const router = express.Router();
 router.get("/", function (req, res) {
   MovieModel.find({})
     .sort(req.query.sortBy)
+    .skip(req.query.skip)
+    .limit(req.query.limit)
     .then(function (movies) {
       res.json({ movies: movies });
     });
@@ -132,6 +134,17 @@ router.post("/rate", function (req, res) {
         else console.log("Successfully updated rating");
       }
     );
+  });
+});
+
+router.get("/rate", function (req, res) {
+  let query = { userEmail: req.query.user, movieId: parseInt(req.query.movie) };
+  console.log(query);
+  RateModel.findOne({
+    userMoviePair: query,
+  }).then((rating, err) => {
+    if (err) res.status(500).json(err);
+    else res.status(201).json({ rate: rating.rate });
   });
 });
 
