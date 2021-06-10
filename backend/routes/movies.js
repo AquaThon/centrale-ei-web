@@ -1,5 +1,7 @@
 const express = require("express");
 const MovieModel = require("../models/movie");
+const RateModel = require("../models/rate");
+const purgeMovie = require("../services/purgeMovie");
 const populateDatabase = require("../services/populateMovieDatabase");
 const router = express.Router();
 
@@ -29,6 +31,7 @@ router.get("/search", function (req, res) {
 });
 
 router.delete("/delete", function (req, res) {
+  purgeMovie(req.body.id);
   MovieModel.deleteOne({ id: req.body.id }, function (err) {
     if (err) res.status(500).json({ message: err });
     else
@@ -89,12 +92,47 @@ router.post("/edit", function (req, res) {
     { useFindAndModify: false },
     function (err) {
       if (err) res.status(500).json({ message: err });
-      else
-        res.status(201).json({
-          message: `Successfully updated movie with id ${req.body.id} !`,
-        });
+      else res.status(201).json(req.body);
     }
   );
+});
+
+router.post("/rate", function (req, res) {
+  const newRate = {
+    userMoviePair: { userEmail: req.body.user, movieId: req.body.movie },
+    userEmail: req.body.user,
+    movieId: req.body.movie,
+    rate: req.body.rate,
+  };
+  RateModel.findOneAndUpdate(
+    {
+      userMoviePair: { userEmail: req.body.user, movieId: req.body.movie },
+    },
+    newRate,
+    { new: true, upsert: true, useFindAndModify: false },
+    function (err) {
+      if (err) res.status(500).json({ message: err });
+      else res.status(201).json(newRate);
+    }
+  );
+  MovieModel.findOne({ id: req.body.movie }).then((movie) => {
+    MovieModel.findOneAndUpdate(
+      { id: req.body.movie },
+      {
+        $set: {
+          voteCount: movie.voteCount + 1,
+          voteAverage:
+            (movie.voteAverage * movie.voteCount + req.body.rate) /
+            (movie.voteCount + 1),
+        },
+      },
+      { useFindAndModify: false },
+      function (err) {
+        if (err) console.log(err);
+        else console.log("Successfully updated rating");
+      }
+    );
+  });
 });
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const express = require("express");
 const UserModel = require("../models/user");
+const purgeUser = require("../services/purgeUser");
 const router = express.Router();
 
 router.get("/", function (req, res) {
@@ -29,6 +30,17 @@ router.post("/new", function (req, res) {
         res.status(500).json({ message: "Error while creating the user" });
       }
     });
+});
+
+router.delete("/delete", function (req, res) {
+  purgeUser(req.body.email);
+  UserModel.deleteOne({ email: req.body.email }, function (err) {
+    if (err) res.status(500).json({ message: err });
+    else
+      res.status(201).json({
+        message: `Successfully deleted user with email ${req.body.email} !`,
+      });
+  });
 });
 
 module.exports = router;
