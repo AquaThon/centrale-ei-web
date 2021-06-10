@@ -137,43 +137,15 @@ router.post("/rate", function (req, res) {
   });
 });
 
-router.post("/rate", function (req, res) {
-  RateModel.findOne({})
-    .sort("id")
-    .then((data) => {
-      const newMovie = new MovieModel({
-        id: Math.min(data.id - 1, -1),
-        originalTitle: req.body.originalTitle,
-        releaseDate: req.body.releaseDate,
-        posterPath: req.body.posterPath,
-        backdropPath: req.body.backdropPath,
-        genreIds: req.body.genreIds,
-        originalLanguage: req.body.originalLanguage,
-        overview: req.body.overview,
-        popularity: req.body.popularity,
-        title: req.body.title,
-        video: req.body.video,
-        voteAverage: req.body.voteAverage,
-        voteCount: req.body.voteCount,
-      });
-
-      newMovie
-        .save()
-        .then(function (newDocument) {
-          res.status(201).json(newDocument);
-        })
-        .catch(function (error) {
-          if (error.code === 11000) {
-            res.status(400).json({
-              message: `Movie with id ${newMovie.id} already exists`,
-            });
-          } else {
-            res
-              .status(500)
-              .json({ message: error + " while creating the movie" });
-          }
-        });
-    });
+router.get("/rate", function (req, res) {
+  let query = { userEmail: req.query.user, movieId: parseInt(req.query.movie) };
+  console.log(query);
+  RateModel.findOne({
+    userMoviePair: query,
+  }).then((rating, err) => {
+    if (err) res.status(500).json(err);
+    else res.status(201).json({ rate: rating.rate });
+  });
 });
 
 module.exports = router;
