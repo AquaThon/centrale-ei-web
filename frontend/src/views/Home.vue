@@ -20,7 +20,7 @@
           <option value="topRated">top rated</option>
         </select>
         <label class="movieshow-row" for="size">Number of movies :</label>
-        <select class="movieshow-row" name="size" v-model="size">
+        <select class="movieshow-row" name="size" v-model="limit">
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="50">50</option>
