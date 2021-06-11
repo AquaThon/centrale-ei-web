@@ -1,6 +1,7 @@
 const express = require("express");
 const MovieModel = require("../models/movie");
 const RateModel = require("../models/rate");
+const PredictionModel = require("../models/prediction");
 const purgeMovie = require("../services/purgeMovie");
 const populateDatabase = require("../services/populateMovieDatabase");
 const indexMovie = require("../services/indexMovie").indexMovie;
@@ -157,5 +158,30 @@ router.get("/rate", function (req, res) {
     else res.status(202).json({ rate: 0 });
   });
 });
+
+router.get("/recommend", function (req, res) {
+  let query = {userEmail: req.query.email};
+  PredictionModel.find(query)
+  .sort("-ratePredict")
+  .limit(parseInt(req.query.limit))
+  .then(async function (movies) {
+    console.log(movies);
+    var count = movies.length;
+    movies.forEach((movie) => {
+      MovieModel.findOne({id: movie.movieId})
+      .then((movieDetails) => {
+        Object.assign(movie, movie, movieDetails);
+        count -= 1;
+        if (count === 0) {
+          res.json({ movies: movies });
+        }
+
+      });
+    })
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+})
 
 module.exports = router;
