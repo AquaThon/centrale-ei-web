@@ -1,5 +1,4 @@
 <template>
-  <h1>Users</h1>
   <UsersTable />
   <div v-if="usersLoadingError">{{ usersLoadingError }}</div>
 </template>
