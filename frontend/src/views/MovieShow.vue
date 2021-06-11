@@ -1,17 +1,36 @@
 <template>
-  <p class="movieshow-title">{{ this.movieOriginalTitle }}</p>
-  <div class="movieshow-container">
-    <div class="movieshow-img" >
-      <img class="movieshow-inner-image" :alt="moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)" :src="moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)" />
+  <div class="movieshow">
+    <p class="movieshow-title">{{ this.movieOriginalTitle }}</p>
+    <div class="movieshow-container">
+      <div class="movieshow-img">
+        <img
+          class="movieshow-inner-image"
+          :alt="
+            moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)
+          "
+          :src="
+            moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)
+          "
+        />
+      </div>
+      <div class="movieshow-block-description">
+        <div class="movieshow-description-header">
+          <p>Synopsis</p>
+        </div>
+        <div class="movieshow-description">
+          <p>
+            {{ this.movieDescription }}
+          </p>
+          <div class="movieshow-description-header">
+            <p>Note</p>
+          </div>
+          <Stars v-if="movieId" :movieId="this.movieId" />
+          <button class="movieshow-button" @click="redirectEdit()">
+            Edit informations
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="movieshow-description">
-      <p>
-        {{ this.movieDescription }}
-      </p>
-      <Stars v-if="movieId" :movieId="this.movieId" />
-      <button @click="redirectEdit()">Edit informations</button>
-    </div>
-
   </div>
 </template>
 
@@ -46,24 +65,31 @@ export default {
           this.movieDescription = response.data.movie.overview;
         })
         .catch((error) => {
-          this.usersLoadingError = "An error occured while fetching movie details.";
+          this.usersLoadingError =
+            "An error occured while fetching movie details.";
           console.error(error);
         });
     },
     redirectEdit: function () {
       this.$router.push(`/movies/edit/${this.movieId}`);
-    }
+    },
   },
   created: function () {
     if (this.$root.currentUserEmail === null) {
       this.$router.push("/users");
-    };
+    }
     this.fetchData();
   },
 };
 </script>
 
 <style>
+.movieshow {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+}
 .movieshow-title {
   padding: 10px 10px 10px 10px;
   margin: 10px;
@@ -76,18 +102,72 @@ export default {
   justify-content: stretch;
   width: 100%;
 }
+
 .movieshow-img {
-  width: 40%;
-  height: 100%;
+  margin-top: 15px;
+  width: 50%;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.movieshow-inner-image {
   display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 35vw;
+  height: 70vw;
+  max-width: 400px;
+  max-height: 600px;
 }
-.movieshow-img .movieshow-inner-image {
-  width: 100%;
+.movieshow-description-header {
+  font-size: 40px;
+  font-family: cursive;
 }
+
 .movieshow-description {
-  width: 60%;
-  padding: 10px 10px 10px 10px;
   display: block;
   align-content: center;
+  font-family: Arial, Helvetic, sans-serif;
+}
+.movieshow-block-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+  margin-bottom: 70px;
+  margin-left: 15px;
+  width: 60%;
+  height: 700px;
+}
+.movieshow-button {
+  margin-top: 30px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.movieshow-button {
+  width: 140px;
+  height: 45px;
+  font-family: "Roboto", sans-serif;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  border: none;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+}
+
+.movieshow-button:hover {
+  background-color: #2ecae5;
+  box-shadow: 0px 15px 20px rgba(46, 147, 229, 0.4);
+  color: #fff;
+  transform: translateY(-7px);
 }
 </style>
