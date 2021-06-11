@@ -67,7 +67,7 @@ export default {
     if (this.$root.currentUserEmail === null) {
       this.$router.push("/users");
     };
-    this.fetchMovies();
+    this.sort();
   },
   methods: {
     fetchMovies: function (body) {
