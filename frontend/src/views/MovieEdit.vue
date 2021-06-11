@@ -135,6 +135,7 @@ export default {
 .movieedit-container {
   display: block;
   margin-left: auto;
+  margin-top: 10px;
   margin-right: auto;
   width: 425px;
 }

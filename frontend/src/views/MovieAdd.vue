@@ -111,6 +111,7 @@ export default {
 }
 .movieadd-container {
   display: block;
+  margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
   width: 80%;
