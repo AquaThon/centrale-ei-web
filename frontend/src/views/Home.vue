@@ -68,22 +68,22 @@ export default {
   created: function () {
     if (this.$root.currentUserEmail === null) {
       this.$router.push("/users");
-    };
+    }
     this.sort();
   },
   methods: {
     fetchMovies: function (body) {
       console.log("Loading API");
       axios
-      .get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies`, body)
-      .then((response) => {
-        this.movies = response.data.movies;
-        console.log(response);
-        console.log("Fetched movies");
-      })
-      .catch(() => {
-        console.log(error);
-      });
+        .get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies`, body)
+        .then((response) => {
+          this.movies = response.data.movies;
+          console.log(response);
+          console.log("Fetched movies");
+        })
+        .catch(() => {
+          console.log(error);
+        });
     },
     search: function () {
       axios
@@ -100,18 +100,23 @@ export default {
     },
     sort: function () {
       if (this.sortBy === "suggestions") {
-        axios.get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies/recommend`, { params: { "email": this.$root.currentUserEmail, "limit": this.limit }})
-        .then((response) => {
-          this.movies = response.data.movies;
-          console.log("Recommended movies loaded");
-        })
-        .catch((error) => {
-          console.log(error);
-        })
+        axios
+          .get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies/recommend`, {
+            params: { email: this.$root.currentUserEmail, limit: this.limit },
+          })
+          .then((response) => {
+            this.movies = response.data.movies;
+            console.log("Recommended movies loaded");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       } else {
-        this.fetchMovies({ params: { "sortBy": this.sortBy, "limit": this.limit, "skip": 0 } });
+        this.fetchMovies({
+          params: { sortBy: this.sortBy, limit: this.limit, skip: 0 },
+        });
       }
-    }
+    },
   },
 };
 </script>
@@ -120,10 +125,14 @@ export default {
 <style scoped>
 .movieshow-nav {
   background-color: #d1d1d1;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
   padding-top: 20px;
   padding-bottom: 20px;
   border-radius: 30px;
   box-shadow: 5px 7px 10px;
+  width: 70%;
 }
 .home {
   text-align: center;
@@ -171,7 +180,7 @@ a {
   width: 140px;
   height: 45px;
   font-family: "Roboto", sans-serif;
-  font-size: 11px;
+  font-size: 15px;
   letter-spacing: 2.5px;
   font-weight: 500;
   color: #000;
@@ -182,7 +191,6 @@ a {
   transition: all 0.3s ease 0s;
   cursor: pointer;
   outline: none;
-  font-weight: bold;
 }
 .movieshow-button:hover {
   background-color: #2ecae5;
@@ -193,7 +201,7 @@ a {
   width: 140px;
   height: 45px;
   font-family: "Roboto", sans-serif;
-  font-size: 11px;
+  font-size: 15px;
   letter-spacing: 2.5px;
   font-weight: 500;
   color: #000;
@@ -204,7 +212,6 @@ a {
   transition: all 0.3s ease 0s;
   cursor: pointer;
   outline: none;
-  font-weight: bold;
 }
 .movieshow-button-1:hover {
   background-color: #2ecae5;
