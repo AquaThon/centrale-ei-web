@@ -3,7 +3,6 @@ import Home from "../views/Home.vue";
 import MovieAdd from "../views/MovieAdd.vue";
 import MovieEdit from "../views/MovieEdit.vue";
 import Users from "../views/Users.vue";
-import About from "../views/About.vue";
 import MovieShow from "../views/MovieShow.vue";
 
 const routes = [
@@ -31,11 +30,6 @@ const routes = [
     path: "/users",
     name: "Users",
     component: Users,
-  },
-  {
-    path: "/about",
-    name: "About",
-    component: About,
   },
 ];
 
