@@ -6,6 +6,10 @@ const PredictionSchema = new mongoose.Schema({
   ratePredict: { type: Number },
 });
 
-const PredictionModel = mongoose.model("PredictionModel", PredictionSchema, "prediction");
+const PredictionModel = mongoose.model(
+  "PredictionModel",
+  PredictionSchema,
+  "prediction"
+);
 
 module.exports = PredictionModel;

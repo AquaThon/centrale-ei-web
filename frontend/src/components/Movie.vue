@@ -9,7 +9,14 @@
       </div>
     </a>
     <div class="mainTitle">
-      <img :alt="moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)" :src="moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)" />
+      <img
+        :alt="
+          moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)
+        "
+        :src="
+          moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)
+        "
+      />
       <h3 class="title">{{ movieOriginalTitle }}</h3>
     </div>
   </article>
@@ -25,11 +32,11 @@ export default {
     movieDescription: "",
   },
   methods: {
-    redirect : function ()  {
+    redirect: function () {
       this.$router.push(`/movies/show/${this.movieId}`);
       return false;
-    }
-  }
+    },
+  },
 };
 </script>
 
