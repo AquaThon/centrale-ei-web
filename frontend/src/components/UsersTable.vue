@@ -3,27 +3,27 @@
   <div class="container">
     <ul class="responsive-table">
       <li class="table-header">
-        <div class="col col-1">Email</div>
-        <div class="col col-2">First name</div>
-        <div class="col col-3">Last name</div>
-        <div class="col col-4"></div>
-        <div class="col col-5"></div>
+        <div class="col col-1"><p>Email</p></div>
+        <div class="col col-2"><p>First name</p></div>
+        <div class="col col-3"><p>Last name</p></div>
+        <div class="col col-4"><p></p></div>
+        <div class="col col-5"><p></p></div>
       </li>
       <li class="table-row" v-for="user in users" :key="user.email">
-        <div class="col col-1" data-label="Email">{{ user.email }}</div>
-        <div class="col col-2" data-label="First Name">{{ user.firstName }}</div>
-        <div class="col col-3" data-label="Last Name">{{ user.lastName }}</div>
-        <div class="col col-4" data-label="Impersonnate" v-if="user.email === $root.currentUserEmail">You</div>
-        <div class="col col-5" data-label="Delete" v-if="user.email === $root.currentUserEmail"></div>
+        <div class="col col-1" data-label="Email"><p>{{ user.email }}</p></div>
+        <div class="col col-2" data-label="First Name"><p>{{ user.firstName }}</p></div>
+        <div class="col col-3" data-label="Last Name"><p>{{ user.lastName }}</p></div>
+        <div class="col col-4" data-label="Impersonnate" v-if="user.email === $root.currentUserEmail"><p>You</p></div>
+        <div class="col col-5" data-label="Delete" v-if="user.email === $root.currentUserEmail"><p></p></div>
         <div class="col col-4" data-label="Impersonnate" v-if="user.email !== $root.currentUserEmail"><button v-on:click="impersonnateUser(user.email)">Impersonnate</button></div>
         <div class="col col-5" data-label="Delete" v-if="user.email !== $root.currentUserEmail"><button v-on:click="deleteUser(user.email)">Delete</button></div>
       </li>
       <li class="table-row">
-        <div class="col col-1" data-label="Email"><input type="text" v-model="userEmail" placeholder="thon@mazino.benjou" /></div>
-        <div class="col col-2" data-label="First Name"><input type="text" v-model="firstName" placeholder="frontend" /></div>
-        <div class="col col-3" data-label="Last Name"><input type="text" v-model="lastName" placeholder="backend" /></div>
+        <div class="col col-1" data-label="Email"><p><input type="text" v-model="userEmail" placeholder="thon@mazino.benjou" /></p></div>
+        <div class="col col-2" data-label="First Name"><p><input type="text" v-model="firstName" placeholder="frontend" /></p></div>
+        <div class="col col-3" data-label="Last Name"><p><input type="text" v-model="lastName" placeholder="backend" /></p></div>
         <div class="col col-4" data-label="Impersonnate"><button v-on:click="submit()">Submit</button></div>
-        <div class="col col-5" data-label="Delete"></div>
+        <div class="col col-5" data-label="Delete"><p></p></div>
       </li>
     </ul>
   </div>
@@ -156,18 +156,15 @@ export default {
     li {
       display: block;
     }
-    .col {
 
-      flex-basis: 100%;
-
-    }
     .col {
       display: flex;
       padding: 10px 0;
+      flex-basis: 100%;
       &:before {
         color: #6C7A89;
         padding-right: 10px;
-        content: attr(data-label);
+        /* content: attr(data-label); */
         flex-basis: 50%;
         text-align: right;
       }
@@ -176,8 +173,43 @@ export default {
 }
 
 input {
-  width: inherit;
-  height: inherit;
+  vertical-align: middle;
+}
+
+p {
+  vertical-align: middle;
+}
+
+button {
+  margin-top: 0px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+button {
+  vertical-align: middle;
+  width: 140px;
+  height: 45px;
+  font-family: "Roboto", sans-serif;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  border: none;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+}
+
+button:hover {
+  background-color: #95A5A6;
+  box-shadow: 0px 15px 20px rgba(46, 147, 229, 0.4);
+  color: #fff;
+  transform: translateY(-7px);
 }
 
 </style>
