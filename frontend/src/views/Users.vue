@@ -1,6 +1,6 @@
 <template>
   <h1>Users</h1>
-  <UsersTable v-if="users.length" :users="users" />
+  <UsersTable />
   <div v-if="usersLoadingError">{{ usersLoadingError }}</div>
 </template>
 
