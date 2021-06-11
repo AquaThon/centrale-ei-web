@@ -1,5 +1,4 @@
 <template>
-
   <div class="container">
     <ul class="responsive-table">
       <li class="table-header">
@@ -10,19 +9,67 @@
         <div class="col col-5"><p></p></div>
       </li>
       <li class="table-row" v-for="user in users" :key="user.email">
-        <div class="col col-1" data-label="Email"><p>{{ user.email }}</p></div>
-        <div class="col col-2" data-label="First Name"><p>{{ user.firstName }}</p></div>
-        <div class="col col-3" data-label="Last Name"><p>{{ user.lastName }}</p></div>
-        <div class="col col-4" data-label="Impersonnate" v-if="user.email === $root.currentUserEmail"><p>You</p></div>
-        <div class="col col-5" data-label="Delete" v-if="user.email === $root.currentUserEmail"><p></p></div>
-        <div class="col col-4" data-label="Impersonnate" v-if="user.email !== $root.currentUserEmail"><button v-on:click="impersonnateUser(user.email)">Impersonnate</button></div>
-        <div class="col col-5" data-label="Delete" v-if="user.email !== $root.currentUserEmail"><button v-on:click="deleteUser(user.email)">Delete</button></div>
+        <div class="col col-1" data-label="Email">
+          <p>{{ user.email }}</p>
+        </div>
+        <div class="col col-2" data-label="First Name">
+          <p>{{ user.firstName }}</p>
+        </div>
+        <div class="col col-3" data-label="Last Name">
+          <p>{{ user.lastName }}</p>
+        </div>
+        <div
+          class="col col-4"
+          data-label="Impersonnate"
+          v-if="user.email === $root.currentUserEmail"
+        >
+          <p>You</p>
+        </div>
+        <div
+          class="col col-5"
+          data-label="Delete"
+          v-if="user.email === $root.currentUserEmail"
+        >
+          <p></p>
+        </div>
+        <div
+          class="col col-4"
+          data-label="Impersonnate"
+          v-if="user.email !== $root.currentUserEmail"
+        >
+          <button v-on:click="impersonnateUser(user.email)">
+            Impersonnate
+          </button>
+        </div>
+        <div
+          class="col col-5"
+          data-label="Delete"
+          v-if="user.email !== $root.currentUserEmail"
+        >
+          <button v-on:click="deleteUser(user.email)">Delete</button>
+        </div>
       </li>
       <li class="table-row">
-        <div class="col col-1" data-label="Email"><p><input type="text" v-model="userEmail" placeholder="thon@mazino.benjou" /></p></div>
-        <div class="col col-2" data-label="First Name"><p><input type="text" v-model="firstName" placeholder="frontend" /></p></div>
-        <div class="col col-3" data-label="Last Name"><p><input type="text" v-model="lastName" placeholder="backend" /></p></div>
-        <div class="col col-4" data-label="Impersonnate"><button v-on:click="submit()">Submit</button></div>
+        <div class="col col-1" data-label="Email">
+          <p>
+            <input
+              type="text"
+              v-model="userEmail"
+              placeholder="thon@mazino.benjou"
+            />
+          </p>
+        </div>
+        <div class="col col-2" data-label="First Name">
+          <p>
+            <input type="text" v-model="firstName" placeholder="frontend" />
+          </p>
+        </div>
+        <div class="col col-3" data-label="Last Name">
+          <p><input type="text" v-model="lastName" placeholder="backend" /></p>
+        </div>
+        <div class="col col-4" data-label="Impersonnate">
+          <button v-on:click="submit()">Submit</button>
+        </div>
         <div class="col col-5" data-label="Delete"><p></p></div>
       </li>
     </ul>
@@ -40,7 +87,7 @@ export default {
       userEmail: "",
       firstName: "",
       lastName: "",
-    }
+    };
   },
   created: function () {
     this.fetchUsers();
@@ -62,42 +109,44 @@ export default {
     },
     deleteUser: function (email) {
       axios
-      .delete(`${process.env.VUE_APP_BACKEND_BASE_URL}/users/delete`, { "data": { "email": email }} )
-      .then((res) => {
-        console.log(res)
-        this.fetchUsers();
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+        .delete(`${process.env.VUE_APP_BACKEND_BASE_URL}/users/delete`, {
+          data: { email: email },
+        })
+        .then((res) => {
+          console.log(res);
+          this.fetchUsers();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     submit: function () {
-      axios.post(`${process.env.VUE_APP_BACKEND_BASE_URL}/users/new/`, {
-        "email": this.userEmail,
-        "firstName": this.firstName,
-        "lastName": this.lastName,
-      })
-      .then((res) => {
-        if (res.status === 201) {
-          console.log(res)
-          this.$root.currentUserEmail = res.data.email;
-          this.fetchUsers();
-        } else {
-          console.log(res);
+      axios
+        .post(`${process.env.VUE_APP_BACKEND_BASE_URL}/users/new/`, {
+          email: this.userEmail,
+          firstName: this.firstName,
+          lastName: this.lastName,
+        })
+        .then((res) => {
+          if (res.status === 201) {
+            console.log(res);
+            this.$root.currentUserEmail = res.data.email;
+            this.fetchUsers();
+          } else {
+            console.log(res);
+            this.errorMessage = "Request failed";
+          }
+        })
+        .catch((error) => {
           this.errorMessage = "Request failed";
-        }
-      })
-      .catch((error) => {
-        this.errorMessage = "Request failed";
-        console.log(error);
-      })
+          console.log(error);
+        });
     },
-  }
+  },
 };
 </script>
 
 <style scoped>
-
 .container {
   max-width: 1000px;
   margin-left: auto;
@@ -114,7 +163,7 @@ export default {
   margin-bottom: 25px;
 }
 .responsive-table .table-header {
-  background-color: #95A5A6;
+  background-color: #95a5a6;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.03em;
@@ -122,7 +171,7 @@ export default {
 
 .responsive-table .table-row {
   background-color: #ffffff;
-  box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
 }
 
 .responsive-table .col-1 {
@@ -150,8 +199,7 @@ export default {
     .table-header {
       display: none;
     }
-    .table-row{
-
+    .table-row {
     }
     li {
       display: block;
@@ -162,7 +210,7 @@ export default {
       padding: 10px 0;
       flex-basis: 100%;
       &:before {
-        color: #6C7A89;
+        color: #6c7a89;
         padding-right: 10px;
         /* content: attr(data-label); */
         flex-basis: 50%;
@@ -206,10 +254,9 @@ button {
 }
 
 button:hover {
-  background-color: #95A5A6;
+  background-color: #95a5a6;
   box-shadow: 0px 15px 20px rgba(46, 147, 229, 0.4);
   color: #fff;
   transform: translateY(-7px);
 }
-
 </style>

@@ -160,28 +160,28 @@ router.get("/rate", function (req, res) {
 });
 
 router.get("/recommend", function (req, res) {
-  let query = {userEmail: req.query.email};
-  PredictionModel.find(query)
-  .sort("-ratePredict")
-  .limit(parseInt(req.query.limit))
-  .then(async function (movies) {
-    console.log(movies);
-    var count = movies.length;
-    movies.forEach((movie) => {
-      MovieModel.findOne({id: movie.movieId})
-      .then((movieDetails) => {
-        Object.assign(movie, movie, movieDetails);
-        count -= 1;
-        if (count === 0) {
-          res.json({ movies: movies });
-        }
+  let query = { userEmail: req.query.email };
 
+  PredictionModel.find(query)
+    .sort("-ratePredict")
+    .limit(parseInt(req.query.limit))
+
+    .then(async function (movies) {
+      var count = movies.length;
+      movies.forEach((movie) => {
+        MovieModel.findOne({ id: movie.movieId }).then((movieDetails) => {
+          Object.assign(movie, movie, movieDetails);
+
+          count -= 1;
+          if (count === 0) {
+            res.json({ movies: movies });
+          }
+        });
       });
     })
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-})
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
 module.exports = router;
