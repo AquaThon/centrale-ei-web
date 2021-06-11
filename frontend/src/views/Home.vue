@@ -124,7 +124,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .movieshow-nav {
-  background-color: #d1d1d1;
+  background-color: #c3dfe4;
   display: block;
   margin-right: auto;
   margin-left: auto;
@@ -142,6 +142,7 @@ export default {
 .logo {
   max-height: 150px;
   max-width: 200px;
+  margin-top: 30px;
 }
 
 .cards {
