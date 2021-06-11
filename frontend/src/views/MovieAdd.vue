@@ -27,8 +27,8 @@
         placeholder="en"
       />
       <p class="row">Description of the movie :</p>
-      <input
-        class="row"
+      <textarea
+        class="row movieadd-description"
         type="text"
         v-model="overview"
         placeholder="At an early age, Cena showed a passion for sports and working out. By the time he was 15, he was a regular gym rat and after graduating high school, Cena headed off to Springfield College in Massachusetts to study exercise physiology and prove his worth on the football field. At Springfield, Cena turned himself into a Division III All-American offensive lineman and team captain."
@@ -126,7 +126,7 @@ div .form {
   flex-direction: column;
   justify-content: space-evenly;
   background-color: #2ecae556;
-  height: 30em;
+  height: 40em;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
 }
@@ -141,6 +141,9 @@ p {
   width: fit-content;
   padding-right: 10px;
   margin: 0px;
+}
+.movieadd-description {
+  height: 200px;
 }
 .movieadd-button-container {
   display: flex;
