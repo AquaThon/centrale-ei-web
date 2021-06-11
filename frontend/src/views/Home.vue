@@ -2,14 +2,34 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.jpg" class="logo" />
     <h1>Bienvenue sur le site du CineVR !</h1>
-    <p>
+    <div>
       <input
         type="text"
         v-model="movieName"
         placeholder="Type a movie name here"
       />
       <button @click="search()">Search</button>
-    </p>
+      <p>
+        Chose between search and sort
+      </p>
+      <label for="sortby">Sort by :</label>
+      <select name="sortby" v-model="sortKey">
+        <option value="suggestions">suggestions</option>
+        <option value="release">release date</option>
+        <option value="title">title</option>
+        <option value="popularity">popularity</option>
+        <option value="topRated">top rated</option>
+      </select>
+      <label for="size">Number of movies</label>
+      <select name="size" v-model="size">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="200">200</option>
+      </select>
+      <button @click="sort()">Go !</button>
+    </div>
     <h3>Movies</h3>
     <div class="cards">
       <Movie
@@ -39,6 +59,8 @@ export default {
       placeHolderPosterPath: "@/assets/posterPlaceHolder.png",
       movieName: "",
       movies: [],
+      sortKey: "suggestions",
+      size: 20,
     };
   },
   created: function () {
@@ -47,7 +69,7 @@ export default {
     };
     console.log("Loading API");
     axios
-      .get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies`)
+      .get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies`, { params: { "sortBy": this.sortKey, "size": this.size } })
       .then(this.fetchMovies)
       .catch(this.apiCallFailure);
   },
@@ -68,6 +90,15 @@ export default {
       })
       .catch((error) => {
         console.log(error)
+      })
+    },
+    sort: function () {
+      axios.get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies/search`, { params: { "title": this.movieName } })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
       })
     }
   },

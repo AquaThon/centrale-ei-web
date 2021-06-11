@@ -12,8 +12,14 @@
         <td>{{ user.lastName }}</td>
         <td v-if="user.email === $root.currentUserEmail">You</td>
         <td v-if="user.email === $root.currentUserEmail"></td>
-        <td v-if="user.email !== $root.currentUserEmail"><button @click="impersonnateUser(user.email)">Impersonnate</button></td>
-        <td v-if="user.email !== $root.currentUserEmail"><button @click="deleteUser(user.email)">Delete</button></td>
+        <td v-if="user.email !== $root.currentUserEmail"><button v-on:click="impersonnateUser(user.email)">Impersonnate</button></td>
+        <td v-if="user.email !== $root.currentUserEmail"><button v-on:click="deleteUser(user.email)">Delete</button></td>
+      </tr>
+      <tr>
+        <td><input type="text" v-model="userEmail" placeholder="thon@mazino.benjou" /></td>
+        <td><input type="text" v-model="firstName" placeholder="frontend" /></td>
+        <td><input type="text" v-model="lastName" placeholder="backend" /></td>
+        <td><button v-on:click="submit()">Submit</button></td>
       </tr>
     </tbody>
   </table>
@@ -27,18 +33,58 @@ export default {
   props: {
     users: Array,
   },
+  data: function () {
+    return {
+      userEmail: "",
+      firstName: "",
+      lastName: "",
+    }
+  },
   methods: {
+    fetchUsers: function () {
+      axios
+        .get(`${process.env.VUE_APP_BACKEND_BASE_URL}/users`)
+        .then((response) => {
+          this.$emit('users', response.data.users);
+        })
+        .catch((error) => {
+          this.usersLoadingError = "An error occured while fetching users.";
+          console.error(error);
+        });
+    },
     impersonnateUser: function (email) {
       this.$root.currentUserEmail = email;
     },
     deleteUser: function (email) {
       axios
-      .delete(`${process.env.VUE_APP_BACKEND_BASE_URL}/users/delete`, { params: { "email": email } })
+      .delete(`${process.env.VUE_APP_BACKEND_BASE_URL}/users/delete`, { "data": { "email": email }} )
       .then((res) => {
         console.log(res)
+        this.fetchUsers();
       })
       .catch((error) => {
         console.log(error)
+      })
+    },
+    submit: function () {
+      axios.post(`${process.env.VUE_APP_BACKEND_BASE_URL}/users/new/`, {
+        "email": this.userEmail,
+        "firstName": this.firstName,
+        "lastName": this.lastName,
+      })
+      .then((res) => {
+        if (res.status === 201) {
+          console.log(res)
+          this.$root.currentUserEmail = res.data.email;
+          this.fetchUsers();
+        } else {
+          console.log(res);
+          this.errorMessage = "Request failed";
+        }
+      })
+      .catch((error) => {
+        this.errorMessage = "Request failed";
+        console.log(error);
       })
     },
   }
