@@ -1,17 +1,36 @@
 <template>
-  <p class="movieshow-title">{{ this.movieOriginalTitle }}</p>
-  <div class="movieshow-container">
-    <div class="movieshow-img" >
-      <img class="movieshow-inner-image" :alt="moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)" :src="moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)" />
+  <div class="movieshow">
+    <p class="movieshow-title">{{ this.movieOriginalTitle }}</p>
+    <div class="movieshow-container">
+      <div class="movieshow-img">
+        <img
+          class="movieshow-inner-image"
+          :alt="
+            moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)
+          "
+          :src="
+            moviePosterPath ? moviePosterPath : require(`@/assets/noImage.png`)
+          "
+        />
+      </div>
+      <div class="movieshow-block-description">
+        <div class="movieshow-description-header">
+          <p>Synopsis</p>
+        </div>
+        <div class="movieshow-description">
+          <p>
+            {{ this.movieDescription }}
+          </p>
+          <div class="movieshow-description-header">
+            <p>Note</p>
+          </div>
+          <Stars v-if="movieId" :movieId="this.movieId" />
+          <button class="movieshow-button" @click="redirectEdit()">
+            Edit informations
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="movieshow-description">
-      <p>
-        {{ this.movieDescription }}
-      </p>
-      <Stars v-if="movieId" :movieId="this.movieId" />
-      <button @click="redirectEdit()">Edit informations</button>
-    </div>
-
   </div>
 </template>
 
@@ -46,24 +65,31 @@ export default {
           this.movieDescription = response.data.movie.overview;
         })
         .catch((error) => {
-          this.usersLoadingError = "An error occured while fetching movie details.";
+          this.usersLoadingError =
+            "An error occured while fetching movie details.";
           console.error(error);
         });
     },
     redirectEdit: function () {
       this.$router.push(`/movies/edit/${this.movieId}`);
-    }
+    },
   },
   created: function () {
     if (this.$root.currentUserEmail === null) {
       this.$router.push("/users");
-    };
+    }
     this.fetchData();
   },
 };
 </script>
 
 <style>
+.movieshow {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+}
 .movieshow-title {
   padding: 10px 10px 10px 10px;
   margin: 10px;
@@ -76,18 +102,44 @@ export default {
   justify-content: stretch;
   width: 100%;
 }
+
 .movieshow-img {
-  width: 40%;
-  height: 100%;
+  margin-top: 15px;
+  width: 50%;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.movieshow-inner-image {
   display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 35vw;
+  height: 70vw;
+  max-width: 400px;
+  max-height: 600px;
 }
-.movieshow-img .movieshow-inner-image {
-  width: 100%;
+.movieshow-description-header {
+  font-size: 40px;
+  font-family: cursive;
 }
+
 .movieshow-description {
-  width: 60%;
-  padding: 10px 10px 10px 10px;
   display: block;
   align-content: center;
+  font-family: Arial, Helvetic, sans-serif;
+}
+.movieshow-block-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+  margin-bottom: 70px;
+  width: 60%;
+  height: 700px;
+}
+.movieshow-button {
+  margin-top: 30px;
 }
 </style>
