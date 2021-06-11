@@ -12,7 +12,7 @@
       <p>Chose between search and sort</p>
       <div class="movieshow-container">
         <label class="movieshow-row" for="sortby">Sort by :</label>
-        <select class="movieshow-row" name="sortby" v-model="sortKey">
+        <select class="movieshow-row" name="sortby" v-model="sortBy">
           <option value="suggestions">suggestions</option>
           <option value="release">release date</option>
           <option value="title">title</option>
