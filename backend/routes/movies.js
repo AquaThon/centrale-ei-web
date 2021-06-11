@@ -150,7 +150,8 @@ router.get("/rate", function (req, res) {
     userMoviePair: query,
   }).then((rating, err) => {
     if (err) res.status(500).json(err);
-    else res.status(201).json({ rate: rating.rate });
+    else if (rating) res.status(201).json({ rate: rating.rate });
+    else res.status(202).json({ rate: 0 });
   });
 });
 
