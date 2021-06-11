@@ -1,5 +1,6 @@
 const MovieModel = require("../models/movie");
 const axios = require("axios").default;
+const indexMovie = require("../services/indexMovie").indexMovie;
 
 const populateMovieDatabase = function (pages) {
   for (let page = 1; page <= pages; page++) {
@@ -31,11 +32,14 @@ const populateMovieDatabase = function (pages) {
             voteAverage: movie.vote_average,
             voteCount: movie.vote_count,
           });
-          newMovie.save().catch(function (error) {
-            if (error.code !== 11000) {
-              console.log(error);
-            }
-          });
+          newMovie
+            .save()
+            .then(indexMovie(newMovie.title, newMovie.overview, newMovie.id))
+            .catch(function (error) {
+              if (error.code !== 11000) {
+                console.log(error);
+              }
+            });
         });
       });
   }

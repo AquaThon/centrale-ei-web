@@ -3,13 +3,15 @@ const MovieModel = require("../models/movie");
 const RateModel = require("../models/rate");
 const purgeMovie = require("../services/purgeMovie");
 const populateDatabase = require("../services/populateMovieDatabase");
+const indexMovie = require("../services/indexMovie").indexMovie;
+const indexSearch = require("../services/indexMovie").indexSearch;
 const router = express.Router();
 
 router.get("/", function (req, res) {
   MovieModel.find({})
     .sort(req.query.sortBy)
-    .skip(req.query.skip)
-    .limit(req.query.limit)
+    .skip(parseInt(req.query.skip))
+    .limit(parseInt(req.query.limit))
     .then(function (movies) {
       res.json({ movies: movies });
     });
@@ -22,14 +24,7 @@ router.get("/show/:movieId", function (req, res) {
 });
 
 router.get("/search", function (req, res) {
-  MovieModel.find({
-    $or: [
-      { title: { $regex: req.query.title, $options: "i" } },
-      { originalTitle: { $regex: req.query.title, $options: "i" } },
-    ],
-  }).then(function (movies) {
-    res.json({ movies: movies });
-  });
+  indexSearch(req.query.title, res);
 });
 
 router.delete("/delete", function (req, res) {
@@ -71,6 +66,11 @@ router.post("/add", function (req, res) {
       newMovie
         .save()
         .then(function (newDocument) {
+          indexMovie(
+            newDocument.originalTitle,
+            newDocument.overview,
+            newDocument.id
+          );
           res.status(201).json(newDocument);
         })
         .catch(function (error) {
@@ -94,7 +94,10 @@ router.post("/edit", function (req, res) {
     { useFindAndModify: false },
     function (err) {
       if (err) res.status(500).json({ message: err });
-      else res.status(201).json(req.body);
+      else {
+        indexMovie(req.body.originalTitle, req.body.overview, req.body.id);
+        res.status(201).json(req.body);
+      }
     }
   );
 });
