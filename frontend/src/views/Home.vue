@@ -13,15 +13,15 @@
         Chose between search and sort
       </p>
       <label for="sortby">Sort by :</label>
-      <select name="sortby" v-model="sortKey">
+      <select name="sortby" v-model="sortBy">
         <option value="suggestions">suggestions</option>
-        <option value="release">release date</option>
-        <option value="title">title</option>
-        <option value="popularity">popularity</option>
-        <option value="topRated">top rated</option>
+        <option value="releaseDate">release date</option>
+        <option value="originalTitle">title</option>
+        <option value="-popularity">popularity</option>
+        <option value="-voteAverage">top rated</option>
       </select>
-      <label for="size">Number of movies</label>
-      <select name="size" v-model="size">
+      <label for="limit">Number of movies</label>
+      <select name="limit" v-model="limit">
         <option value="10">10</option>
         <option value="20">20</option>
         <option value="50">50</option>
@@ -59,27 +59,29 @@ export default {
       placeHolderPosterPath: "@/assets/posterPlaceHolder.png",
       movieName: "",
       movies: [],
-      sortKey: "suggestions",
-      size: 20,
+      sortBy: "suggestions",
+      limit: 20,
     };
   },
   created: function () {
     if (this.$root.currentUserEmail === null) {
       this.$router.push("/users");
     };
-    console.log("Loading API");
-    axios
-      .get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies`, { params: { "sortBy": this.sortKey, "size": this.size } })
-      .then(this.fetchMovies)
-      .catch(this.apiCallFailure);
+    this.sort();
   },
   methods: {
-    fetchMovies: function (response) {
-      this.movies = response.data.movies;
-      console.log("Fetched movies");
-    },
-    apiCallFailure: function (error) {
-      console.log(error);
+    fetchMovies: function (body) {
+      console.log("Loading API");
+      axios
+      .get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies`, body)
+      .then((response) => {
+        this.movies = response.data.movies;
+        console.log(response);
+        console.log("Fetched movies");
+      })
+      .catch(() => {
+        console.log(error);
+      });
     },
     search: function () {
       axios
@@ -93,13 +95,18 @@ export default {
       })
     },
     sort: function () {
-      axios.get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies/search`, { params: { "title": this.movieName } })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+      if (this.sortBy === "suggestions") {
+        axios.get(`${process.env.VUE_APP_BACKEND_BASE_URL}/movies/recommend`, { params: { "email": this.$root.currentUserEmail, "limit": this.limit }})
+        .then((response) => {
+          this.movies = response.data.movies;
+          console.log("Recommended movies loaded");
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      } else {
+        this.fetchMovies({ params: { "sortBy": this.sortBy, "limit": this.limit, "skip": 0 } });
+      }
     }
   },
 };

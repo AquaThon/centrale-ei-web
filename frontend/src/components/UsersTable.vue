@@ -30,22 +30,23 @@ import axios from "axios";
 
 export default {
   name: "UsersTable",
-  props: {
-    users: Array,
-  },
   data: function () {
     return {
+      users: Array,
       userEmail: "",
       firstName: "",
       lastName: "",
     }
+  },
+  created: function () {
+    this.fetchUsers();
   },
   methods: {
     fetchUsers: function () {
       axios
         .get(`${process.env.VUE_APP_BACKEND_BASE_URL}/users`)
         .then((response) => {
-          this.$emit('users', response.data.users);
+          this.users = response.data.users;
         })
         .catch((error) => {
           this.usersLoadingError = "An error occured while fetching users.";
